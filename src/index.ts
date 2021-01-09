@@ -1,4 +1,4 @@
-import { createLibstorefrontModule, HookType, LibStorefront } from '@grupakmk/libstorefront';
+import {createLibstorefrontModule, HookType, LibStorefront, Logger} from '@grupakmk/libstorefront';
 import { LibstorefrontPlugin } from '@grupakmk/libstorefront/dist/config/types/libstorefront-plugin';
 import { AssortmentListDao } from './dao';
 import { AssortmentListService } from './service';
@@ -15,9 +15,14 @@ export const AssortmentListPlugin = ((libstorefront: LibStorefront) => {
     libstorefront.getIOCContainer().bind<AssortmentListDao>(AssortmentListDao).to(AssortmentListDao);
     libstorefront.getIOCContainer().bind<AssortmentListService>(AssortmentListService).to(AssortmentListService);
     libstorefront.listenTo(HookType.AfterCoreModulesRegistered, (lsf: LibStorefront) => {
+       libstorefront = lsf;
        lsf.registerModule(createLibstorefrontModule('assortmentList', assortmentListReducer, AssortmentsDefaultState));
     });
     libstorefront.listenTo(HookType.AfterPlaceOrder, () => {
-       libstorefront.get<AssortmentListService>(AssortmentListService).invalidateAssortmentList();
+        try {
+            libstorefront.get<AssortmentListService>(AssortmentListService).invalidateAssortmentList();
+        } catch (e) {
+            Logger.info('Cannot invalidate assortment list', 'assortment-list-plugin', e.message);
+        }
     });
 }) as LibstorefrontPlugin;

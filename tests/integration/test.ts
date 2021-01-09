@@ -8,12 +8,11 @@ const LSF = new LibStorefront({
     plugins: [
         AssortmentListPlugin
     ]
-}, 'http://localhost:9001');
+}, 'https://api.meringer.staging.grupakmk.pl');
 
 (async () => {
-    await LSF.UserService.login('test@grupakmk.pl', 'Testowe2!');
-    LSF.get(AssortmentListService)
-        .getAssortmentList()
+    await LSF.UserService.login('joanna.kocur@grupakmk.pl', 'Haslodotestowania1!');
+    LSF.get(AssortmentListService).getAssortmentList()
         .then(res => {
             debugger
         })

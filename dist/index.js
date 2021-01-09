@@ -231,10 +231,16 @@ exports.AssortmentListPlugin = (function (libstorefront) {
     libstorefront.getIOCContainer().bind(dao_1.AssortmentListDao).to(dao_1.AssortmentListDao);
     libstorefront.getIOCContainer().bind(service_1.AssortmentListService).to(service_1.AssortmentListService);
     libstorefront.listenTo(libstorefront_1.HookType.AfterCoreModulesRegistered, function (lsf) {
+        libstorefront = lsf;
         lsf.registerModule(libstorefront_1.createLibstorefrontModule('assortmentList', assortment_reducer_1.assortmentListReducer, assortment_default_1.AssortmentsDefaultState));
     });
     libstorefront.listenTo(libstorefront_1.HookType.AfterPlaceOrder, function () {
-        libstorefront.get(service_1.AssortmentListService).invalidateAssortmentList();
+        try {
+            libstorefront.get(service_1.AssortmentListService).invalidateAssortmentList();
+        }
+        catch (e) {
+            libstorefront_1.Logger.info('Cannot invalidate assortment list', 'assortment-list-plugin', e.message);
+        }
     });
 });
 
