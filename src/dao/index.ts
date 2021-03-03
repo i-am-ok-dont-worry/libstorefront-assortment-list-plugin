@@ -11,9 +11,8 @@ export class AssortmentListDao {
      * @param {string} customerToken
      */
     public getAssortmentList (customerId: string, storeCode?: string, customerToken?: string) {
-        const params = new URLSearchParams({ ...(storeCode && { storeCode }), ...(customerToken && { token: customerToken }) });
         return this.taskQueue.execute({
-            url: URLTransform.getAbsoluteApiUrl('/api/vendor/assortments/' + customerId + '?' + params.toString()),
+            url: URLTransform.getAbsoluteApiUrl('/api/vendor/assortments/' + customerId + '?token={{token}}&storeCode={{storeCode}}'),
             payload: {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -30,7 +29,7 @@ export class AssortmentListDao {
      */
     public invalidateAssortmentList (customerId: string, customerToken?: string) {
         return this.taskQueue.execute({
-            url: URLTransform.getAbsoluteApiUrl('/api/vendor/assortments/' + customerId + '?' + 'token=' + customerToken),
+            url: URLTransform.getAbsoluteApiUrl('/api/vendor/assortments/' + customerId + '?token={{token}}&storeCode={{storeCode}}'),
             payload: {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
