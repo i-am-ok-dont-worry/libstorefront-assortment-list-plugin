@@ -520,7 +520,6 @@ var AssortmentListThunks;
                         storeCode = libstorefront_1.StoreViewHandler.currentStoreView().general.store_code;
                         userId = getState().user.current.id;
                         userToken = getState().user.token;
-                        debugger;
                         if (!userId && !customerId) {
                             throw new Error('Cannot load assortment list. User is not defined');
                         }

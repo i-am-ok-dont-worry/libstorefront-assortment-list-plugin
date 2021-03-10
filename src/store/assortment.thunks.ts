@@ -10,7 +10,7 @@ export namespace AssortmentListThunks {
                 const storeCode = StoreViewHandler.currentStoreView().general.store_code;
                 const userId = getState().user.current.id;
                 const userToken = getState().user.token;
-                debugger;
+                
                 if (!userId && !customerId) { throw new Error('Cannot load assortment list. User is not defined'); }
 
                 const response = await IOCContainer.get(AssortmentListDao).getAssortmentList(customerId || userId, storeCode, userToken);
